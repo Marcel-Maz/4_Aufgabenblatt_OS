@@ -34,17 +34,32 @@ void read_command()
     char path_command[16];
     char cmd[16]; 
     char parameter[16];
-    
+    int counter = 0;
+    char *token;
+ 
     strcpy(path_command,"/bin/");
 
     fgets(buffer, INPUT_SIZE, stdin);
-    
-    sscanf(buffer,"%s %s", cmd, parameter);
-    strcat(path_command, cmd);
-           
+
+    token = strtok(buffer, " ");
+    strcpy(cmd,token);
+    strcat(path_command,cmd);
+
+    while(token != NULL)
+    {
+        ++counter;
+        if(counter == 2)
+            strcpy(parameter,token);
+        token = strtok( NULL," ");
+    }
+
+    if(token == NULL && counter == 1)
+        strcpy(parameter, " ");
+
     exec_cmd(path_command,cmd,parameter);
-                  
+
     free(buffer);
+    
 }
 
 void exec_cmd(const char *path_command, char *command,  char *parameter) 
@@ -52,19 +67,11 @@ void exec_cmd(const char *path_command, char *command,  char *parameter)
     int status;
     pid_t pid,x;
 
-
     char *cmd[] = {command, parameter, (char*)NULL};
 
-
-/* printf("%s\n",cmd[0]);
-  printf("%s\n",cmd[1]);
-  printf("%s\n",cmd[2]);
-
-*/
-    /*printf("%s\n", path_command);
-    printf("%s\n",command);
-    printf("%s\n",parameter);
-    */
+   printf("This is the path:%s\n",path_command);
+    printf("THis is the command:%s\n",command);
+    printf("THis is the paramater:%s\n", parameter);
 
 
     pid = fork();

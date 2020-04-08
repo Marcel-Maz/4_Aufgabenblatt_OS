@@ -19,5 +19,6 @@
 void type_prompt();
 void read_command();
 void exec_cmd( const char* path_command,  char *command,  char* parameter);
+//char *strdup(const char *src);
 
 #endif
